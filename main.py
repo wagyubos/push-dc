@@ -26,7 +26,8 @@ print("===========================================\n")
 time.sleep(1)
 
 channel_id = input("Masukkan ID channel: ")
-waktu2 = int(input("Set Waktu Kirim Pesan: "))
+min_delay = int(input("Set Waktu Minimum Delay (detik): "))
+max_delay = int(input("Set Waktu Maksimum Delay (detik): "))
 
 time.sleep(1)
 print("3")
@@ -45,19 +46,26 @@ with open("token.txt", "r") as f:
     authorization = f.readline().strip()
 
 while True:
-        channel_id = channel_id.strip()
+    channel_id = channel_id.strip()
 
-        payload = {
-            'content': random.choice(words).strip()
-        }
+    payload = {
+        'content': random.choice(words).strip()
+    }
 
-        headers = {
-            'Authorization': authorization
-        }
+    headers = {
+        'Authorization': authorization,
+        'Content-Type': 'application/json'
+    }
 
-        r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", data=payload, headers=headers)
+    r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", json=payload, headers=headers)
+
+    if r.status_code == 200:
         print(Fore.WHITE + "Sent message: ")
         print(Fore.YELLOW + payload['content'])
+    else:
+        print(Fore.RED + f"Gagal mengirim pesan: {r.status_code} - {r.text}")
 
-        time.sleep(waktu2)
-
+    # Delay acak
+    delay = random.randint(min_delay, max_delay)
+    print(Fore.CYAN + f"Tunggu {delay} detik sebelum pesan berikutnya...")
+    time.sleep(delay)
