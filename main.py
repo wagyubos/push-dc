@@ -65,13 +65,13 @@ while True:
         headers=headers
     )
 
-    if r.status_code == 200 or r.status_code == 201:
+    if r.status_code in [200, 201]:
         print(Fore.WHITE + "Sent message: ")
         print(Fore.YELLOW + payload['content'])
     else:
         print(Fore.RED + f"Gagal mengirim pesan: {r.status_code}")
 
-    # random delay 5–15 detik (bisa kamu ubah)
+    # random delay 5–15 detik
     delay = random.randint(5, 15)
     print(Fore.CYAN + f"Tunggu {delay} detik...\n")
     time.sleep(delay)
