@@ -57,7 +57,11 @@ while True:
         'Content-Type': 'application/json'
     }
 
-    r = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages", json=payload, headers=headers)
+    r = requests.post(
+        f"https://discord.com/api/v9/channels/{channel_id}/messages",
+        json=payload,
+        headers=headers
+    )
 
     if r.status_code == 200:
         print(Fore.WHITE + "Sent message: ")
@@ -65,7 +69,7 @@ while True:
     else:
         print(Fore.RED + f"Gagal mengirim pesan: {r.status_code} - {r.text}")
 
-    # Delay acak
+    # random delay antara min_delay dan max_delay
     delay = random.randint(min_delay, max_delay)
     print(Fore.CYAN + f"Tunggu {delay} detik sebelum pesan berikutnya...")
     time.sleep(delay)
