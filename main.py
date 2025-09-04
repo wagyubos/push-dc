@@ -25,8 +25,8 @@ print("===========================================\n")
 
 time.sleep(1)
 
-channel_id = input("Masukkan ID channel: ").strip()
-waktu2 = int(input("Set Waktu Kirim Pesan (detik): "))
+# input ID channel
+channel_id = input("Masukkan ID channel: ")
 
 time.sleep(1)
 print("3")
@@ -36,17 +36,21 @@ time.sleep(1)
 print("1")
 time.sleep(1)
 
+# clear layar
 os.system('cls' if os.name == 'nt' else 'clear')
 
-# ambil pesan
+# baca pesan dari file
 with open("pesan.txt", "r") as f:
     words = f.readlines()
 
-# ambil token
+# baca token dari file
 with open("token.txt", "r") as f:
     authorization = f.readline().strip()
 
+# loop utama
 while True:
+    channel_id = channel_id.strip()
+
     payload = {
         'content': random.choice(words).strip()
     }
@@ -61,13 +65,13 @@ while True:
         headers=headers
     )
 
-    if r.status_code == 200:
+    if r.status_code == 200 or r.status_code == 201:
         print(Fore.WHITE + "Sent message: ")
         print(Fore.YELLOW + payload['content'])
     else:
-        print(Fore.RED + f"Gagal kirim pesan: {r.status_code}")
+        print(Fore.RED + f"Gagal mengirim pesan: {r.status_code}")
 
-    # delay acak biar lebih natural
-    delay = random.randint(waktu2, waktu2 + 5)
-    print(Fore.CYAN + f"Tidur {delay} detik...")
+    # random delay 5–15 detik (bisa kamu ubah)
+    delay = random.randint(5, 15)
+    print(Fore.CYAN + f"Tunggu {delay} detik...\n")
     time.sleep(delay)
